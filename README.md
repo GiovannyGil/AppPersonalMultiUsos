@@ -88,17 +88,37 @@ Permite organizar las actividades académicas y realizar seguimiento de las resp
 
 La aplicación utilizará **Glassmorphism** como lenguaje visual principal, buscando una apariencia moderna, limpia y consistente.
 
+### Identidad visual y paleta cromática
+
+La identidad visual estará basada en una **tríada análoga de tonos verdes**, que funcionará como paleta cromática principal de toda la aplicación.
+
+Colores principales:
+
+| Color | Código HEX | Uso sugerido |
+|---|---|---|
+| Verde principal | `#05D12E` | Acciones principales, indicadores y elementos destacados. |
+| Verde lima | `#42D105` | Acentos visuales, estados activos y elementos secundarios. |
+| Verde turquesa | `#05D194` | Elementos complementarios, gráficos y detalles de interfaz. |
+
+Estos tres colores deberán utilizarse de manera equilibrada para mantener una identidad visual consistente, evitando la saturación de elementos.
+
+Se podrán incorporar colores neutros y tonos derivados para fondos, textos, superficies translúcidas, sombras y estados de interacción, siempre respetando la paleta principal.
+
 ### Principios de diseño
 
+- **Glassmorphism:** superficies translúcidas, tarjetas con efecto de vidrio y profundidad visual.
+- **Paleta análoga:** predominio de los tres tonos verdes establecidos como identidad cromática.
 - **Superficies translúcidas:** tarjetas, paneles y elementos de navegación con transparencias controladas.
 - **Efectos de desenfoque:** uso moderado de blur para generar profundidad y separación visual.
 - **Bordes sutiles:** contornos finos y reflejos suaves que definan los componentes.
 - **Jerarquía visual:** títulos, subtítulos, datos y acciones claramente diferenciados.
-- **Paleta de colores coherente:** colores base neutros con acentos específicos para cada módulo.
 - **Iconografía consistente:** iconos claros y reconocibles para navegación y acciones.
 - **Diseño adaptable:** interfaces que se ajusten a diferentes tamaños de pantalla.
 - **Accesibilidad:** contraste suficiente, tipografía legible y áreas táctiles adecuadas.
 - **Rendimiento visual:** uso controlado de transparencias, sombras y desenfoques para evitar afectar la fluidez de la aplicación.
+
+La paleta cromática deberá centralizarse mediante un sistema de temas y variables reutilizables, evitando definir colores directamente en cada componente.
+
 
 ### Navegación principal
 
