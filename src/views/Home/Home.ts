@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Alert, Animated } from 'react-native';
 import { MODULES, type Module } from '../../context/modules';
 
@@ -20,6 +20,7 @@ const formatToday = (): string => {
 export type HomeLogic = {
   greeting: string;
   today: string;
+  summary: string;
   modules: readonly Module[];
   openModule: (module: Module) => void;
 };
@@ -36,11 +37,18 @@ export function useHome(): HomeLogic {
     Alert.alert(module.title, 'Este módulo estará disponible próximamente.');
   }, []);
 
-  return { greeting, today, modules: MODULES, openModule };
+  return {
+    greeting,
+    today,
+    summary: `${MODULES.length} módulos para ordenar tu día`,
+    modules: MODULES,
+    openModule,
+  };
 }
 
-/** Feedback táctil reutilizable: encoge la tarjeta mientras se presiona. */
+/** Feedback táctil reutilizable: encoge la tarjeta y la marca como presionada. */
 export function usePressFeedback() {
+  const [pressed, setPressed] = useState(false);
   const scale = useRef(new Animated.Value(1)).current;
 
   const animateTo = (toValue: number) =>
@@ -52,8 +60,15 @@ export function usePressFeedback() {
     }).start();
 
   return {
+    pressed,
     scale,
-    onPressIn: () => animateTo(0.96),
-    onPressOut: () => animateTo(1),
+    onPressIn: () => {
+      setPressed(true);
+      animateTo(0.96);
+    },
+    onPressOut: () => {
+      setPressed(false);
+      animateTo(1);
+    },
   };
 }

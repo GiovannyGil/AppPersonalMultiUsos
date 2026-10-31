@@ -1,5 +1,3 @@
-import { colors } from './theme';
-
 export type ModuleId = 'workouts' | 'events' | 'finances' | 'university';
 
 export type Module = {
@@ -7,8 +5,6 @@ export type Module = {
   title: string;
   description: string;
   icon: string;
-  /** Color de acento de la tarjeta; sale de la paleta análoga. */
-  accent: string;
 };
 
 /**
@@ -21,27 +17,23 @@ export const MODULES: readonly Module[] = [
     title: 'Rutinas',
     description: 'Entrenamientos y progreso',
     icon: '🏋️',
-    accent: colors.primary,
   },
   {
     id: 'events',
     title: 'Eventos',
-    description: 'Calendario y recordatorios',
+    description: 'Agenda y recordatorios',
     icon: '🗓️',
-    accent: colors.lime,
   },
   {
     id: 'finances',
     title: 'Finanzas',
-    description: 'Ingresos, gastos y metas',
+    description: 'Ingresos y gastos',
     icon: '💰',
-    accent: colors.turquoise,
   },
   {
     id: 'university',
     title: 'Universidad',
-    description: 'Clases, tareas y entregas',
+    description: 'Clases y entregas',
     icon: '🎓',
-    accent: colors.primary,
   },
 ];

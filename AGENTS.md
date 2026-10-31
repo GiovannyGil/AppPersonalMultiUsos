@@ -1,8 +1,9 @@
 # AGENTS.md
 
 App móvil de gestión personal (rutinas, eventos, finanzas, universidad) — React Native + TypeScript,
-local-first y UI Glassmorphism con paleta verde análoga. `README.md` es la especificación funcional
-(módulos, MVP, requisitos); este archivo resume cómo trabajar en el código real.
+local-first y UI Glassmorphism con paleta de dos colores (blanco dominante, verde de acento).
+`README.md` es la especificación funcional (módulos, MVP, requisitos); este archivo resume cómo
+trabajar en el código real.
 
 Estado actual: proyecto recién inicializado desde la plantilla de React Native. Ya existe el dashboard
 (`src/views/Home/`) con las cuatro tarjetas de módulo; `App.tsx` lo monta. Todavía no hay navegación,
@@ -68,22 +69,28 @@ assets/  tests/
 
 ## Diseño (requisito de producto, no sugerencia)
 
-Glassmorphism: superficies translúcidas, blur moderado, bordes sutiles y jerarquía clara. Paleta
-análoga de tres verdes como única identidad cromática:
+Estilo: fondo blanco puro con superficies blancas elevadas, sombras verdes y bordes sutiles; nada de
+blur ni transparencias (el Glassmorphism del README quedó acotado a esta versión). Paleta de
+**dos colores**, con el blanco como dominante y el verde solo como acento:
 
 | Color | HEX | Uso |
 |---|---|---|
-| Verde principal | `#05D12E` | acciones principales, indicadores |
-| Verde lima | `#42D105` | acentos, estados activos |
-| Verde turquesa | `#05D194` | complementos, gráficos |
+| Blanco | `#FFFFFF` | superficies y tarjetas, texto, bordes, iconos, acciones principales |
+| Verde | `#0CC61B` | acentos, estados activos, indicadores, efectos y sombras |
 
-Neutros y tonos derivados solo para fondos, texto, superficies, sombras e interacción. Definir todo en
-`src/context/theme.ts` y consumirlo desde ahí.
+- No reintroducir la paleta anterior (`#05D12E`, `#42D105`, `#05D194`): fue descartada por el dueño.
+  Tampoco otros verdes ni una tercera familia de color.
+- El resto de la interfaz se construye con neutros derivados (negros/grises y blanco con alpha) para
+  fondos, superficies, texto secundario y estados. Definir todo en `src/context/theme.ts`.
 
-- El vidrio se logra sin librerías nuevas: `backgroundImage` (linear-gradient), `boxShadow` (con capa
-  `inset` para el brillo del borde) y `filter: [{ blur }]` en los glows de fondo. Son props de RN 0.88
-  sobre New Architecture; no instalar `blur`/`gradient` de terceros para esto.
-- Rendimiento: usar blur/transparencias con moderación (evitarlos en listas largas y animaciones).
+- Fondo y tarjetas son blancos (`#FFFFFF`); el relieve es neumórfico: superficie con gradiente
+  blanco→gris verdoso muy leve, luz blanca arriba-izquierda y proyección verde difusa abajo-derecha
+  (`boxShadow` multicapa de RN 0.88, New Architecture). Al presionar, la tarjeta se hunde con sombras
+  `inset`. Nada de glows ni degradados de fondo: el fondo queda completamente blanco.
+- El verde no se usa como color de texto (2.3:1 sobre blanco, ilegible): solo sombras, bordes, puntos
+  e iconos. Texto principal en `#0B100C` y secundario en negro al 55%.
+- Rendimiento: cada sombra multicapa cuesta; no sumar más capas por tarjeta ni animar `boxShadow`
+  (se anima la escala, como ya hace `usePressFeedback`).
 - Accesibilidad: contraste suficiente, tipografía legible, áreas táctiles amplias; toda tarjeta
   presionable lleva `accessibilityRole` y `accessibilityLabel`.
 - Idioma: UI y textos de usuario en **español**; identificadores, tipos y comentarios de código en inglés.

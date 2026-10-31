@@ -6,7 +6,7 @@ import Home from './src/views/Home/Home.tsx';
 function App() {
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="dark-content" />
       <Home />
     </SafeAreaProvider>
   );

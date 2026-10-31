@@ -90,24 +90,23 @@ La aplicación utilizará **Glassmorphism** como lenguaje visual principal, busc
 
 ### Identidad visual y paleta cromática
 
-La identidad visual estará basada en una **tríada análoga de tonos verdes**, que funcionará como paleta cromática principal de toda la aplicación.
+La identidad visual estará basada en una **paleta de dos colores: blanco como color principal y verde como color secundario**, aplicada de forma consistente en toda la aplicación.
 
 Colores principales:
 
 | Color | Código HEX | Uso sugerido |
 |---|---|---|
-| Verde principal | `#05D12E` | Acciones principales, indicadores y elementos destacados. |
-| Verde lima | `#42D105` | Acentos visuales, estados activos y elementos secundarios. |
-| Verde turquesa | `#05D194` | Elementos complementarios, gráficos y detalles de interfaz. |
+| Blanco | `#FFFFFF` | Color dominante: superficies y tarjetas de vidrio, textos, bordes, iconos y acciones principales. |
+| Verde | `#0CC61B` | Color secundario: acentos, estados activos, indicadores, efectos y sombras. |
 
-Estos tres colores deberán utilizarse de manera equilibrada para mantener una identidad visual consistente, evitando la saturación de elementos.
+El blanco deberá predominar en la interfaz; el verde se reservará para acentos puntuales, de modo que la identidad se mantenga limpia y consistente sin saturar la pantalla.
 
-Se podrán incorporar colores neutros y tonos derivados para fondos, textos, superficies translúcidas, sombras y estados de interacción, siempre respetando la paleta principal.
+Se podrán incorporar neutros y tonos derivados (grises, blanco con distintas opacidades y negros) para fondos, superficies translúcidas, textos secundarios, sombras y estados de interacción, siempre derivados de esta paleta de dos colores.
 
 ### Principios de diseño
 
 - **Glassmorphism:** superficies translúcidas, tarjetas con efecto de vidrio y profundidad visual.
-- **Paleta análoga:** predominio de los tres tonos verdes establecidos como identidad cromática.
+- **Paleta de dos colores:** predominio del blanco, con el verde reservado para acentos, efectos y sombras.
 - **Superficies translúcidas:** tarjetas, paneles y elementos de navegación con transparencias controladas.
 - **Efectos de desenfoque:** uso moderado de blur para generar profundidad y separación visual.
 - **Bordes sutiles:** contornos finos y reflejos suaves que definan los componentes.

@@ -1,7 +1,7 @@
 import { Animated, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Module } from '../../context/modules';
-import { alpha, space } from '../../context/theme';
+import { space } from '../../context/theme';
 import { useHome, usePressFeedback } from './Home';
 import { styles } from './style';
 
@@ -13,7 +13,7 @@ type ModuleCardProps = {
 };
 
 function ModuleCard({ module, onPress }: ModuleCardProps) {
-  const { scale, onPressIn, onPressOut } = usePressFeedback();
+  const { pressed, scale, onPressIn, onPressOut } = usePressFeedback();
 
   return (
     <AnimatedPressable
@@ -25,28 +25,19 @@ function ModuleCard({ module, onPress }: ModuleCardProps) {
       onPressOut={onPressOut}
       style={[
         styles.card,
-        {
-          borderColor: alpha(module.accent, 0.38),
-          boxShadow: `0 18px 34px ${alpha(
-            module.accent,
-            0.16,
-          )}, 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.24)`,
-          transform: [{ scale }],
-        },
+        pressed && styles.cardPressed,
+        { transform: [{ scale }] },
       ]}>
-      <View
-        style={[
-          styles.iconBadge,
-          {
-            backgroundColor: alpha(module.accent, 0.18),
-            borderColor: alpha(module.accent, 0.5),
-          },
-        ]}>
-        <Text style={styles.icon}>{module.icon}</Text>
+      <View style={styles.cardTop}>
+        <View style={styles.iconBadge}>
+          <Text style={styles.icon}>{module.icon}</Text>
+        </View>
+        <View style={styles.dot} />
       </View>
+
       <View>
         <Text style={styles.cardTitle}>{module.title}</Text>
-        <Text style={styles.cardMeta} numberOfLines={1}>
+        <Text style={styles.cardMeta} numberOfLines={2}>
           {module.description}
         </Text>
       </View>
@@ -55,14 +46,11 @@ function ModuleCard({ module, onPress }: ModuleCardProps) {
 }
 
 function Home() {
-  const { greeting, today, modules, openModule } = useHome();
+  const { greeting, today, summary, modules, openModule } = useHome();
   const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.screen}>
-      <View style={[styles.glow, styles.glowTop]} />
-      <View style={[styles.glow, styles.glowBottom]} />
-
       <View
         style={[
           styles.content,
@@ -75,6 +63,7 @@ function Home() {
           <Text style={styles.title}>{greeting}</Text>
           <Text style={styles.date}>{today}</Text>
         </View>
+        <View style={styles.divider} />
 
         <View style={styles.grid}>
           {modules.map(module => (
@@ -86,7 +75,10 @@ function Home() {
           ))}
         </View>
 
-        <Text style={styles.footer}>Todo lo que organizás, en un solo lugar</Text>
+        <View style={styles.footer}>
+          <View style={styles.footerDot} />
+          <Text style={styles.footerText}>{summary}</Text>
+        </View>
       </View>
     </View>
   );
