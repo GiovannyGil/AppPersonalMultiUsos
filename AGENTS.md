@@ -5,18 +5,22 @@ local-first y UI Glassmorphism con paleta de dos colores (blanco dominante, verd
 `README.md` es la especificación funcional (módulos, MVP, requisitos); este archivo resume cómo
 trabajar en el código real.
 
-Estado actual: proyecto recién inicializado desde la plantilla de React Native. Ya existe el dashboard
-(`src/views/Home/`) con las cuatro tarjetas de módulo; `App.tsx` lo monta. Todavía no hay navegación,
-base de datos ni lógica de módulos: tocar una tarjeta solo muestra un aviso de "próximamente".
+Estado actual: dashboard (`src/views/Home/`) con las cuatro tarjetas de módulo y navegación real a
+cada módulo (`src/views/<Módulo>/`), que por ahora solo muestra una bienvenida. No hay base de datos
+ni funcionalidad de módulos todavía.
 
 ## Stack real (verificado en `package.json`)
 
 - React Native **0.88 CLI bare** (no Expo), React **19.3**, TypeScript 6 vía `@react-native/typescript-config`.
 - Node **>= 22.11**.
-- Dependencias de runtime: solo `react-native-safe-area-context` además del core. **Todavía no hay**
-  navegación, base de datos, iconos, blur/glass ni librería de componentes: hay que elegir, instalar
-  y justificar cada una antes de importarla.
-- Entry: `index.js` → `App.tsx` (`AppRegistry`, nombre de `app.json`). Android: `com.apppersonalmultiusos`.
+- Dependencias de runtime: React Navigation 7 (`@react-navigation/native` + `native-stack`),
+  `react-native-screens` y `react-native-safe-area-context`.
+- `react-native-screens` es módulo nativo: después de tocar dependencias nativas hay que reconstruir
+  (`npm.cmd run android`; en macOS, `bundle exec pod install`). `MainActivity.kt` ya sobrescribe
+  `onCreate(null)` como exige la librería.
+- Sin base de datos, iconos ni blur/glass instalados: elegir y justificar antes de importar.
+- Entry: `index.js` → `App.tsx` (`AppRegistry`, nombre de `app.json`) → `RootNavigator`. Android:
+  `com.apppersonalmultiusos`.
 
 ## Comandos
 
@@ -43,26 +47,33 @@ En este entorno Windows/PowerShell los shims `.ps1` están bloqueados: `npm ...`
 Layout objetivo del README (crear a medida que se implementa, no de golpe):
 
 ```text
-src/context/{theme,modules}   src/app/{navigation,providers}
-src/views/<Pantalla>/{<Pantalla>.tsx,<Pantalla>.ts,style.ts}
-src/components/{common,forms,glass}   src/features/{workouts,events,finances,university}
+src/context/{theme,modules}   src/app/navigation/{RootNavigator.tsx,types.ts}
+src/views/<Pantalla>/<Pantalla>.tsx    src/views/Home/{Home.ts,style.ts}
+src/components/common/ModuleWelcome/{ModuleWelcome.tsx,style.ts}
+src/components/{forms,glass}   src/features/{workouts,events,finances,university}
 src/database/{migrations,repositories,schema}   src/hooks  src/services  src/types  src/utils
 assets/  tests/
 ```
 
 - Patrón de pantalla fijado por el dueño del proyecto: `<Pantalla>.tsx` = JSX puro, `<Pantalla>.ts` =
   lógica (hooks, helpers, tipos), `style.ts` = `StyleSheet.create`. La vista no calcula; el `.ts` no
-  renderiza. Aplicarlo a cada pantalla nueva.
+  renderiza. Las pantallas sin lógica propia (las cuatro bienvenidas) viven en un solo archivo: no
+  crear `.ts` vacío hasta que haya algo que sacar de la vista.
 - **Trampa:** `Home.ts` y `Home.tsx` comparten nombre base, así que `import Home from './.../Home'`
   resuelve al `.ts` y rompe en runtime. Importar siempre con extensión:
   `'./src/views/Home/Home.tsx'` (`allowImportingTsExtensions` está activo en el preset de TS).
+- Navegación: stack nativo registrado en `src/app/navigation/RootNavigator.tsx` con
+  `headerShown: false`; el botón de volver lo dibuja `ModuleWelcome` (`canGoBack()` o `navigate('Home')`).
+  Los nombres de ruta salen de `ModuleRoute` en `src/context/modules.ts`. Agregar un módulo toca cuatro
+  puntos: las uniones `ModuleId`/`ModuleRoute`, la entrada en `MODULES`, la pantalla en `src/views/` y
+  el `Stack.Screen` en `RootNavigator`.
 - Globales (tokens de diseño y registros de datos) viven en `src/context/`: `theme.ts` (colores,
   espacios, radios, tipografía, sombras y el helper `alpha`) y `modules.ts` (registro de los cuatro
-  módulos). La UI recorre `MODULES`, así que un módulo nuevo es una entrada ahí más su carpeta en
-  `src/features`.
+  módulos). La UI recorre `MODULES`, no hay listas duplicadas de módulos en las vistas.
 - El `src/theme/` del README no se creó: los tokens están en `src/context/theme.ts` por decisión del
   dueño del proyecto. No duplicar colores ni estilos fuera de ahí.
-- Un módulo = una carpeta de feature con sus componentes, hooks y acceso a datos propio.
+- Un módulo empieza como pantalla en `src/views/<Módulo>/`. Cuando deje de ser una bienvenida, su
+  lógica y acceso a datos van a `src/features/<módulo>/` y la pantalla queda como composición.
 - Datos: local-first, **SQLite o WatermelonDB aún sin decidir ni instalar**. No inventar una capa de
   persistencia: proponer la elección, centralizar el acceso en `src/database/repositories` y mantener
   los componentes fuera de la DB. Prever migraciones, validación previa al guardado y manejo de errores.
@@ -100,6 +111,9 @@ blur ni transparencias (el Glassmorphism del README quedó acotado a esta versi�
 - Jest con `@react-native/jest-preset` y `react-test-renderer` 19.3; no hay `@testing-library/react-native`
   (si se añade, migrar también `__tests__/App.test.tsx`).
 - Tests en `__tests__/` o junto al módulo; mantener el smoke test de `App`.
+- `jest.config.js` amplía `transformIgnorePatterns` para `@react-navigation*` y `react-native-screens`
+  porque publican ESM. Si aparece `SyntaxError: Unexpected token 'export'` al agregar una librería,
+  sumarla a esa lista; el primer test tarda ~60 s por transformar `node_modules`.
 
 ## Skills del repo
 

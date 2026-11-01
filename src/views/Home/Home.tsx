@@ -1,11 +1,15 @@
 import { Animated, Pressable, Text, View } from 'react-native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import type { RootStackParamList } from '../../app/navigation/types';
 import type { Module } from '../../context/modules';
 import { space } from '../../context/theme';
 import { useHome, usePressFeedback } from './Home';
 import { styles } from './style';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 type ModuleCardProps = {
   module: Module;
@@ -45,8 +49,8 @@ function ModuleCard({ module, onPress }: ModuleCardProps) {
   );
 }
 
-function Home() {
-  const { greeting, today, summary, modules, openModule } = useHome();
+function Home({ navigation }: HomeProps) {
+  const { greeting, today, summary, modules } = useHome();
   const insets = useSafeAreaInsets();
 
   return (
@@ -70,7 +74,7 @@ function Home() {
             <ModuleCard
               key={module.id}
               module={module}
-              onPress={() => openModule(module)}
+              onPress={() => navigation.navigate(module.route)}
             />
           ))}
         </View>

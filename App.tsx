@@ -1,13 +1,12 @@
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-// Ruta con extensión obligatoria: `Home.ts` (lógica) ensombrece a `Home.tsx` (vista).
-import Home from './src/views/Home/Home.tsx';
+import RootNavigator from './src/app/navigation/RootNavigator.tsx';
 
 function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle="dark-content" />
-      <Home />
+      <RootNavigator />
     </SafeAreaProvider>
   );
 }

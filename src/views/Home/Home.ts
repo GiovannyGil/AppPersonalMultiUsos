@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { Alert, Animated } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { Animated } from 'react-native';
 import { MODULES, type Module } from '../../context/modules';
 
 const greetingFor = (hour: number): string => {
@@ -22,27 +22,21 @@ export type HomeLogic = {
   today: string;
   summary: string;
   modules: readonly Module[];
-  openModule: (module: Module) => void;
 };
 
 /**
- * Lógica de la pantalla de inicio. La vista solo consume este resultado, así que
- * migrar `openModule` a navegación real no toca `Home.tsx` ni `style.ts`.
+ * Lógica de la pantalla de inicio. La vista solo consume este resultado; la
+ * navegación la resuelve el componente con su prop `navigation`.
  */
 export function useHome(): HomeLogic {
   const greeting = useMemo(() => greetingFor(new Date().getHours()), []);
   const today = useMemo(formatToday, []);
-
-  const openModule = useCallback((module: Module) => {
-    Alert.alert(module.title, 'Este módulo estará disponible próximamente.');
-  }, []);
 
   return {
     greeting,
     today,
     summary: `${MODULES.length} módulos para ordenar tu día`,
     modules: MODULES,
-    openModule,
   };
 }
 
