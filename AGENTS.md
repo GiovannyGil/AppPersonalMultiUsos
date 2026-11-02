@@ -110,7 +110,10 @@ blur ni transparencias (el Glassmorphism del README quedó acotado a esta versi�
 
 - Jest con `@react-native/jest-preset` y `react-test-renderer` 19.3; no hay `@testing-library/react-native`
   (si se añade, migrar también `__tests__/App.test.tsx`).
-- Tests en `__tests__/` o junto al módulo; mantener el smoke test de `App`.
+- Tests en `__tests__/` o junto al módulo. `navigation.test.tsx` recorre `MODULES` y verifica que cada
+  tarjeta del home abre su pantalla; si agregás un módulo, ese test lo cubre solo.
+- `jest.setup.js` mockea `react-native-safe-area-context`. **No borrarlo**: sin ese mock el provider
+  nativo no renderiza hijos y cualquier test pasa en falso (árbol vacío).
 - `jest.config.js` amplía `transformIgnorePatterns` para `@react-navigation*` y `react-native-screens`
   porque publican ESM. Si aparece `SyntaxError: Unexpected token 'export'` al agregar una librería,
   sumarla a esa lista; el primer test tarda ~60 s por transformar `node_modules`.
