@@ -32,19 +32,14 @@ function ModuleCard({ module, onPress }: ModuleCardProps) {
         pressed && styles.cardPressed,
         { transform: [{ scale }] },
       ]}>
-      <View style={styles.cardTop}>
-        <View style={styles.iconBadge}>
-          <Text style={styles.icon}>{module.icon}</Text>
-        </View>
-        <View style={styles.dot} />
+      <View style={styles.iconBadge}>
+        <Text style={styles.icon}>{module.icon}</Text>
       </View>
 
-      <View>
-        <Text style={styles.cardTitle}>{module.title}</Text>
-        <Text style={styles.cardMeta} numberOfLines={2}>
-          {module.description}
-        </Text>
-      </View>
+      <Text style={styles.cardTitle}>{module.title}</Text>
+      <Text style={styles.cardMeta} numberOfLines={2}>
+        {module.description}
+      </Text>
     </AnimatedPressable>
   );
 }

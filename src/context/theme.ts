@@ -58,5 +58,4 @@ export const shadows = {
     'inset -5px -5px 12px rgba(255, 255, 255, 1)',
     `0 4px 10px ${alpha(colors.green, 0.1)}`,
   ].join(', '),
-  dot: `0 0 8px ${alpha(colors.green, 0.7)}`,
 } as const;
